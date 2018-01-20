@@ -26,6 +26,9 @@ jobs:
     - stage: Unit Test
       script:
         - docker run -d -p 30100:30100 servicecomb/service-center
+        - go get github.com/FiloSottile/gvt
+        - go get github.com/stretchr/testify
+        - gvt restore
         - bash -x scripts/travis/unit_test.sh
     - stage: Build
       script: 

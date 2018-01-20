@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
 echo "mode: atomic" > coverage.txt
-export COVERAGE_PATH=$(pwd)
-cd $1
+cd ..
+chmod 777 -R .
+cd go-chassis
 for d in $(go list ./... | grep -v vendor |  grep -v third_party); do
     cd $GOPATH/src/$d
     if [ $(ls | grep _test.go | wc -l) -gt 0 ]; then
