@@ -4,6 +4,9 @@ go:
   - 1.8.3
 install: true
 
+services:
+  - docker
+
 before_script:
   - mkdir -p $HOME/gopath/src/github.com/ServiceComb/go-chassis
   - rsync -az ${TRAVIS_BUILD_DIR}/ $HOME/gopath/src/github.com/ServiceComb/go-chassis/
@@ -18,6 +21,12 @@ jobs:
       script: 
         - go get -u github.com/tsenart/deadcode
         - bash -x scripts/travis/deadCodeChecker.sh
+    - stage: Go Vet
+      script: bash -x scripts/travis/goVetChecker.sh
+    - stage: Unit Test
+      script:
+        - docker run -d -p 30100:30100 servicecomb/service-center
+        - bash -x scripts/travis/unit_test.sh
     - stage: Build
       script: 
         - go get github.com/FiloSottile/gvt

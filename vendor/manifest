@@ -252,7 +252,7 @@
         },
         {
             "importpath": "github.com/ServiceComb/auth",
-            "repository": "https://github.com/ServiceComb/auth",
+            "repository": "https://github.com/servicecomb/auth",
             "vcs": "git",
             "revision": "4cc33395dd156fce9cb4d8ae505f9297601d5442",
             "branch": "HEAD",
@@ -260,7 +260,7 @@
         },
         {
             "importpath": "github.com/ServiceComb/cse-collector",
-            "repository": "https://github.com/ServiceComb/cse-collector",
+            "repository": "https://github.com/servicecomb/cse-collector",
             "vcs": "git",
             "revision": "5d3001deae743cd3287ce11f7bbcbaad614bd060",
             "branch": "HEAD",
@@ -268,7 +268,7 @@
         },
         {
             "importpath": "github.com/ServiceComb/go-archaius",
-            "repository": "https://github.com/ServiceComb/go-archaius",
+            "repository": "https://github.com/servicecomb/go-archaius",
             "vcs": "git",
             "revision": "81f809a636cf87887730825d8e29568803c982c2",
             "branch": "HEAD",
@@ -276,7 +276,7 @@
         },
         {
             "importpath": "github.com/ServiceComb/go-cc-client",
-            "repository": "https://github.com/ServiceComb/go-cc-client",
+            "repository": "https://github.com/servicecomb/go-cc-client",
             "vcs": "git",
             "revision": "60a10167aabab92ecad8c3abf00e9ee179fe37f3",
             "branch": "HEAD",
@@ -284,7 +284,7 @@
         },
         {
             "importpath": "github.com/ServiceComb/go-sc-client",
-            "repository": "https://github.com/ServiceComb/go-sc-client",
+            "repository": "https://github.com/servicecomb/go-sc-client",
             "vcs": "git",
             "revision": "9ad574b99052c71147d10c3c05be7ff9e0aeb378",
             "branch": "HEAD",
@@ -292,7 +292,7 @@
         },
         {
             "importpath": "github.com/ServiceComb/http-client",
-            "repository": "https://github.com/ServiceComb/http-client",
+            "repository": "https://github.com/servicecomb/http-client",
             "vcs": "git",
             "revision": "9969254c44708136072453a06cc618d4696ea46b",
             "branch": "HEAD",
@@ -300,7 +300,7 @@
         },
         {
             "importpath": "github.com/ServiceComb/paas-lager",
-            "repository": "https://github.com/ServiceComb/paas-lager",
+            "repository": "https://github.com/servicecomb/paas-lager",
             "vcs": "git",
             "revision": "378a833fc008d8343083dc73e77db142afccf377",
             "branch": "HEAD",
