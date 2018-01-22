@@ -121,7 +121,7 @@ service_description:
 
 		os.Setenv("CHASSIS_HOME", filepath.Join("root"))
 	} else {
-		os.Setenv("CHASSIS_HOME", filepath.Join("/home/gopath/src/github.com/ServiceComb/go-chassis"))
+		os.Setenv("CHASSIS_HOME", filepath.Join("/home/travis/gopath/src/github.com/ServiceComb/go-chassis"))
 	}
 	lager.Initialize("", "INFO", "", "size", true, 1, 10, 7)
 
