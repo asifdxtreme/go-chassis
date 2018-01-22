@@ -22,16 +22,16 @@ func TestInit(t *testing.T) {
 
 	if os.Getenv("BUILD_ENV") != "travis" {
 
-		path = "root/conf/chassis.yaml"
+		path = "chassis/conf/chassis.yaml"
 		var _, err = os.Stat(path)
 
 		// create file if not exists
 		if os.IsNotExist(err) {
-			err := os.MkdirAll("root", 777)
+			err := os.MkdirAll("chassis", 777)
 			assert.NoError(t, err)
-			err = os.MkdirAll("root/conf", 777)
+			err = os.MkdirAll("chassis/conf", 777)
 			assert.NoError(t, err)
-			file, err := os.Create("root/conf/chassis.yaml")
+			file, err := os.Create("chassis/conf/chassis.yaml")
 			assert.NoError(t, err)
 			defer file.Close()
 		}
@@ -91,11 +91,11 @@ ssl:
   registry.consumer.certPwdFile:
 `)
 		assert.NoError(t, err)
-		path = filepath.Join("root", "conf", "microservice.yaml")
+		path = filepath.Join("chassis", "conf", "microservice.yaml")
 		_, err = os.Stat(path)
 		// create file if not exists
 		if os.IsNotExist(err) {
-			file, err := os.Create(filepath.Join("root", "conf", "microservice.yaml"))
+			file, err := os.Create(filepath.Join("chassis", "conf", "microservice.yaml"))
 			assert.NoError(t, err)
 			defer file.Close()
 		}
@@ -119,7 +119,7 @@ service_description:
 		err = file.Sync()
 		assert.NoError(t, err)
 
-		os.Setenv("CHASSIS_HOME", filepath.Join("root"))
+		os.Setenv("CHASSIS_HOME", filepath.Join("chassis"))
 	} else {
 		os.Setenv("CHASSIS_HOME", filepath.Join("/home/travis/gopath/src/github.com/ServiceComb/go-chassis"))
 	}
@@ -143,7 +143,7 @@ service_description:
 		err = os.Remove(path)
 		assert.NoError(t, err)
 
-		err = os.RemoveAll("root")
+		err = os.RemoveAll("chassis")
 		assert.NoError(t, err)
 	}
 
