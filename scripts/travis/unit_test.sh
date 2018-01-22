@@ -1,5 +1,8 @@
 #!/bin/sh
 set -e
+mkdir -p /go/src/github.com/ServiceComb/go-chassis
+cp -r /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}} /go/src/github.com/ServiceComb/go-chassis
+cd /go/src/github.com/ServiceComb/go-chassis
 echo "mode: atomic" > coverage.txt
 #export BUILD_ENV=travis
 mkdir conf

@@ -23,9 +23,6 @@ jobs:
 
       # specify any bash command here prefixed with `run: `
       - setup_remote_docker
-      - run: mkdir -p /go/src/github.com/ServiceComb/go-chassis
-      - run: cp -r /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}} /go/src/github.com/ServiceComb/go-chassis
-      - run: cd /go/src/github.com/ServiceComb/go-chassis
       - run: docker run -d -p 30100:30100 servicecomb/service-center
       - run: docker ps
       - run: go get github.com/FiloSottile/gvt
