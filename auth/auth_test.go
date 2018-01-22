@@ -29,7 +29,7 @@ func Test_loadPaasAuth(t *testing.T) {
 	assert.True(t, isAuthConfNotExist(err))
 	// test func nil
 
-	utDir := filepath.Join(os.Getenv("GOPATH"), "test")
+	utDir := filepath.Join(os.Getenv("GOPATH"), "src/github.com/ServiceComb/go-chassis")
 	authTestDir := filepath.Join(utDir, "auth")
 	chassisHome := authTestDir
 	os.Setenv("CHASSIS_HOME", chassisHome)
@@ -85,7 +85,7 @@ func testAuthNotLoaded(t *testing.T) {
 }
 
 func Test_loadAkskAuth(t *testing.T) {
-	utDir := filepath.Join(os.Getenv("GOPATH"), "test")
+	utDir := filepath.Join(os.Getenv("GOPATH"), "src/github.com/ServiceComb/go-chassis")
 	authTestDir := filepath.Join(utDir, "auth")
 	chassisHome := authTestDir
 	cipherRootDir := filepath.Join(authTestDir, "cipher")
