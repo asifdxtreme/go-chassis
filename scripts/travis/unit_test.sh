@@ -1,5 +1,4 @@
 #!/bin/sh
-sudo su
 set -e
 echo "mode: atomic" > coverage.txt
 export BUILD_ENV=travis
