@@ -15,14 +15,6 @@ before_script:
 
 jobs:
   include:
-    - stage: Format Checker
-      script: bash -x scripts/travis/formatChecker.sh
-    - stage: DeadCode Checker
-      script: 
-        - go get -u github.com/tsenart/deadcode
-        - bash -x scripts/travis/deadCodeChecker.sh
-    - stage: Go Vet
-      script: bash -x scripts/travis/goVetChecker.sh
     - stage: Unit Test
       script:
         - docker run -d -p 30100:30100 servicecomb/service-center
