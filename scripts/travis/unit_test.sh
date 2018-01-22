@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 echo "mode: atomic" > coverage.txt
-export BUILD_ENV=travis
+#export BUILD_ENV=travis
 mkdir conf
 mkdir log
 cp -r scripts/travis/*.yaml conf/
