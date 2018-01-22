@@ -1,0 +1,11 @@
+---
+#微服务的私有属性
+service_description:
+  name: nodejs2
+  level: FRONT
+  version: 0.1
+  properties:
+    allowCrossApp: true
+  instance_properties:
+    a: s
+    p: s

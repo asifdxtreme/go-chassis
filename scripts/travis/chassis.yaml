@@ -1,0 +1,49 @@
+---
+#APPLICATION_ID: CSE optional
+
+cse:
+  flowcontrol:
+    Consumer:
+      qps:
+        enabled: true
+        limit:
+          Server.EmployServer: 100
+  loadbalance:
+    strategy:
+      name: RoundRobin
+      sessionTimeoutInSeconds: 30
+    retryEnabled: false
+    retryOnNext: 2
+    retryOnSame: 3
+    backoff:
+      kind: constant
+      MinMs: 200
+      MaxMs: 400
+  service:
+    registry:
+      type: servicecenter
+      scope: full
+      address: http://127.0.0.1:30100
+      refeshInterval : 30s
+      watch: true
+      register: reg
+  handler:
+    chain:
+      consumer:
+        default: bizkeeper-consumer, loadbalance, ratelimiter-consumer
+  references:
+    Server:
+      version: 0.1
+      transport: highway
+    HelloServer:
+      version: 0.1
+      transport: highway
+ssl:
+  registry.consumer.cipherPlugin: default
+  registry.consumer.verifyPeer: false
+  registry.consumer.cipherSuits: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  registry.consumer.protocol: TLSv1.2
+  registry.consumer.caFile:
+  registry.consumer.certFile:
+  registry.consumer.keyFile:
+  registry.consumer.certPwdFile:

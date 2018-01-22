@@ -18,25 +18,29 @@ const (
 func TestInit(t *testing.T) {
 	t.Log("Testing Chassis Init function")
 
-	path := "$HOME/conf/chassis.yaml"
-	var _, err = os.Stat(path)
+	path := ""
 
-	// create file if not exists
-	if os.IsNotExist(err) {
-		/*err := os.MkdirAll("$HOME", 777)
-		assert.NoError(t, err)*/
-		err = os.MkdirAll("$HOME/conf", 777)
-		assert.NoError(t, err)
-		file, err := os.Create("$HOME/conf/chassis.yaml")
+	if os.Getenv("BUILD_ENV") != "travis" {
+
+		path = "root/conf/chassis.yaml"
+		var _, err = os.Stat(path)
+
+		// create file if not exists
+		if os.IsNotExist(err) {
+			err := os.MkdirAll("root", 777)
+			assert.NoError(t, err)
+			err = os.MkdirAll("root/conf", 777)
+			assert.NoError(t, err)
+			file, err := os.Create("root/conf/chassis.yaml")
+			assert.NoError(t, err)
+			defer file.Close()
+		}
+		file, err := os.OpenFile(path, os.O_RDWR, 0644)
 		assert.NoError(t, err)
 		defer file.Close()
-	}
-	file, err := os.OpenFile(path, os.O_RDWR, 0644)
-	assert.NoError(t, err)
-	defer file.Close()
 
-	// write some text line-by-line to file
-	_, err = file.WriteString(`---
+		// write some text line-by-line to file
+		_, err = file.WriteString(`---
 #APPLICATION_ID: CSE optional
 
 cse:
@@ -86,19 +90,19 @@ ssl:
   registry.consumer.keyFile:
   registry.consumer.certPwdFile:
 `)
-	assert.NoError(t, err)
-	path = filepath.Join("$HOME", "conf", "microservice.yaml")
-	_, err = os.Stat(path)
-	// create file if not exists
-	if os.IsNotExist(err) {
-		file, err := os.Create(filepath.Join("$HOME", "conf", "microservice.yaml"))
+		assert.NoError(t, err)
+		path = filepath.Join("root", "conf", "microservice.yaml")
+		_, err = os.Stat(path)
+		// create file if not exists
+		if os.IsNotExist(err) {
+			file, err := os.Create(filepath.Join("root", "conf", "microservice.yaml"))
+			assert.NoError(t, err)
+			defer file.Close()
+		}
+		file, err = os.OpenFile(path, os.O_RDWR, 0644)
 		assert.NoError(t, err)
 		defer file.Close()
-	}
-	file, err = os.OpenFile(path, os.O_RDWR, 0644)
-	assert.NoError(t, err)
-	defer file.Close()
-	_, err = file.WriteString(`---
+		_, err = file.WriteString(`---
 #微服务的私有属性
 service_description:
   name: nodejs2
@@ -110,12 +114,15 @@ service_description:
     a: s
     p: s
 `)
-	assert.NoError(t, err)
-	// save changes
-	err = file.Sync()
-	assert.NoError(t, err)
+		assert.NoError(t, err)
+		// save changes
+		err = file.Sync()
+		assert.NoError(t, err)
 
-	os.Setenv("CHASSIS_HOME", filepath.Join("$HOME"))
+		os.Setenv("CHASSIS_HOME", filepath.Join("root"))
+	} else {
+		os.Setenv("CHASSIS_HOME", filepath.Join("$HOME/gopath/src/github.com/ServiceComb/go-chassis"))
+	}
 	lager.Initialize("", "INFO", "", "size", true, 1, 10, 7)
 
 	config.GlobalDefinition = &model.GlobalCfg{}
@@ -127,16 +134,19 @@ service_description:
 	}
 	config.GlobalDefinition.Cse.Service.Registry.AutoRegister = "abc"
 
-	err = chassis.Init()
+	err := chassis.Init()
 	assert.NoError(t, err)
 
 	chassis.RegisterSchema("rest", "str")
 
-	err = os.Remove(path)
-	assert.NoError(t, err)
+	if os.Getenv("BUILD_ENV") != "travis" {
+		err = os.Remove(path)
+		assert.NoError(t, err)
 
-	err = os.RemoveAll("$HOME")
-	assert.NoError(t, err)
+		err = os.RemoveAll("root")
+		assert.NoError(t, err)
+	}
+
 }
 func TestInitError(t *testing.T) {
 	t.Log("Testing chassis Init function for errors")
