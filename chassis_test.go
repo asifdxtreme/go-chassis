@@ -18,16 +18,16 @@ const (
 func TestInit(t *testing.T) {
 	t.Log("Testing Chassis Init function")
 
-	path := "root/conf/chassis.yaml"
+	path := "home/conf/chassis.yaml"
 	var _, err = os.Stat(path)
 
 	// create file if not exists
 	if os.IsNotExist(err) {
-		err := os.MkdirAll("root", 777)
+		err := os.MkdirAll("home", 777)
 		assert.NoError(t, err)
-		err = os.MkdirAll("root/conf", 777)
+		err = os.MkdirAll("home/conf", 777)
 		assert.NoError(t, err)
-		file, err := os.Create("root/conf/chassis.yaml")
+		file, err := os.Create("home/conf/chassis.yaml")
 		assert.NoError(t, err)
 		defer file.Close()
 	}
@@ -87,11 +87,11 @@ ssl:
   registry.consumer.certPwdFile:
 `)
 	assert.NoError(t, err)
-	path = filepath.Join("root", "conf", "microservice.yaml")
+	path = filepath.Join("home", "conf", "microservice.yaml")
 	_, err = os.Stat(path)
 	// create file if not exists
 	if os.IsNotExist(err) {
-		file, err := os.Create(filepath.Join("root", "conf", "microservice.yaml"))
+		file, err := os.Create(filepath.Join("home", "conf", "microservice.yaml"))
 		assert.NoError(t, err)
 		defer file.Close()
 	}
@@ -115,7 +115,7 @@ service_description:
 	err = file.Sync()
 	assert.NoError(t, err)
 
-	os.Setenv("CHASSIS_HOME", filepath.Join("root"))
+	os.Setenv("CHASSIS_HOME", filepath.Join("home"))
 	lager.Initialize("", "INFO", "", "size", true, 1, 10, 7)
 
 	config.GlobalDefinition = &model.GlobalCfg{}
@@ -135,7 +135,7 @@ service_description:
 	err = os.Remove(path)
 	assert.NoError(t, err)
 
-	err = os.RemoveAll("root")
+	err = os.RemoveAll("home/conf")
 	assert.NoError(t, err)
 }
 func TestInitError(t *testing.T) {
