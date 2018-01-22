@@ -2,6 +2,8 @@
 set -e
 echo "mode: atomic" > coverage.txt
 export BUILD_ENV=travis
+mkdir conf
+mkdir log
 cp -r scripts/travis/*.yaml conf/
 pwd
 for d in $(go list ./... | grep -v vendor |  grep -v third_party); do
