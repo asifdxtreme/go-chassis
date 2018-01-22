@@ -2,6 +2,9 @@
 set -e
 mkdir -p /go/src/github.com/ServiceComb/go-chassis
 cp -r /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/* /go/src/github.com/ServiceComb/go-chassis/
+cd /
+sudo chown circleci:circleci /go/src/github.com -R
+sudo 777  /go/src/github.com -R
 cd /go/src/github.com/ServiceComb/go-chassis
 pwd
 ls
