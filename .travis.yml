@@ -13,7 +13,6 @@ before_script:
   - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/ServiceComb/go-chassis
   - cd $HOME
   - chmod 777 gopath -R
-  - chown root:root gopath -R
   - su - root
   - ls -lrt
   - cd $HOME/gopath/src/github.com/ServiceComb/go-chassis
@@ -27,6 +26,13 @@ jobs:
     - stage: Unit Test
       script:
         - docker run -d -p 30100:30100 servicecomb/service-center
+        - docker run -it golang:latest /bin/bash
+        - cd src
+        - mkdir -p github.com/ServiceComb/
+        - cd github.com/ServiceComb
+        - git clone http://github.com/asifdxtreme/go-chassis
+        - cd go-chassis
+        - git checkout govet
         - go get github.com/FiloSottile/gvt
         - go get github.com/stretchr/testify
         - gvt restore
