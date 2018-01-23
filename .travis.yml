@@ -25,6 +25,9 @@ jobs:
     - stage: Unit Test
       script:
         - docker run -d -p 30100:30100 servicecomb/service-center
+        - umask
+        - umask 000
+        - umask
         - go get github.com/FiloSottile/gvt
         - go get github.com/stretchr/testify
         - gvt restore
