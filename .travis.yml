@@ -13,6 +13,7 @@ before_script:
   - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/ServiceComb/go-chassis
   - cd $HOME
   - chmod 777 gopath -R
+  - chown root:root gopath -R
   - su - root
   - ls -lrt
   - cd $HOME/gopath/src/github.com/ServiceComb/go-chassis
