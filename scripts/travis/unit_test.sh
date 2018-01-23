@@ -13,6 +13,7 @@ echo "mode: atomic" > coverage.txt
 pwd
 ls -lrt
 cp -r scripts/travis/*.yaml conf/
+mkdir -p chassis/conf
 ls -lrt
 pwd
 for d in $(go list ./... | grep -v vendor |  grep -v third_party); do
