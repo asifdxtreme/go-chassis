@@ -9,7 +9,7 @@ set -e
 #pwd
 #ls -lrt
 echo "mode: atomic" > coverage.txt
-export BUILD_ENV=travis
+#export BUILD_ENV=travis
 pwd
 ls -lrt
 cp -r scripts/travis/*.yaml conf/

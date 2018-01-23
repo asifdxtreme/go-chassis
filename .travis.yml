@@ -25,13 +25,6 @@ jobs:
     - stage: Unit Test
       script:
         - docker run -d -p 30100:30100 servicecomb/service-center
-        - docker run -it golang:latest /bin/bash
-        - cd src
-        - mkdir -p github.com/ServiceComb/
-        - cd github.com/ServiceComb
-        - git clone http://github.com/asifdxtreme/go-chassis
-        - cd go-chassis
-        - git checkout govet
         - go get github.com/FiloSottile/gvt
         - go get github.com/stretchr/testify
         - gvt restore
