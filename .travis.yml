@@ -15,6 +15,10 @@ before_script:
   - mkdir $HOME/gopath/src/github.com/ServiceComb/go-chassis/conf
   - mkdir $HOME/gopath/src/github.com/ServiceComb/go-chassis/log
   - touch $HOME/gopath/src/github.com/ServiceComb/go-chassis/log/chassis.log
+  - cd ..
+  - chmod 777 go-chassis -R
+  - cd go-chassis
+  - ls -lrt
 
 jobs:
   include:
