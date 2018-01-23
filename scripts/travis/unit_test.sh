@@ -1,17 +1,17 @@
 #!/bin/sh
 set -e
-mkdir -p /go/src/github.com/ServiceComb/go-chassis
-cp -r /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/* /go/src/github.com/ServiceComb/go-chassis/
-sudo su
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=/go
-cd /go/src/github.com/ServiceComb/go-chassis
+#mkdir -p /go/src/github.com/ServiceComb/go-chassis
+#cp -r /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/* /go/src/github.com/ServiceComb/go-chassis/
+#sudo su
+#export PATH=$PATH:/usr/local/go/bin
+#export GOPATH=/go
+#cd /go/src/github.com/ServiceComb/go-chassis
+#pwd
+#ls -lrt
+echo "mode: atomic" > coverage.txt
+export BUILD_ENV=travis
 pwd
 ls -lrt
-echo "mode: atomic" > coverage.txt
-#export BUILD_ENV=travis
-mkdir conf
-mkdir log
 cp -r scripts/travis/*.yaml conf/
 ls -lrt
 pwd
