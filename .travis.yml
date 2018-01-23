@@ -11,13 +11,13 @@ before_script:
   - mkdir -p $HOME/gopath/src/github.com/ServiceComb/go-chassis
   - rsync -az ${TRAVIS_BUILD_DIR}/ $HOME/gopath/src/github.com/ServiceComb/go-chassis/
   - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/ServiceComb/go-chassis
+  - cd $HOME
+  - chmod 777 gopath -R
+  - ls -lrt
   - cd $HOME/gopath/src/github.com/ServiceComb/go-chassis
   - mkdir $HOME/gopath/src/github.com/ServiceComb/go-chassis/conf
   - mkdir $HOME/gopath/src/github.com/ServiceComb/go-chassis/log
   - touch $HOME/gopath/src/github.com/ServiceComb/go-chassis/log/chassis.log
-  - cd ..
-  - chmod 777 go-chassis -R
-  - cd go-chassis
   - ls -lrt
 
 jobs:
