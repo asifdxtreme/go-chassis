@@ -31,7 +31,7 @@
 			"importpath": "github.com/ServiceComb/go-archaius",
 			"repository": "https://github.com/ServiceComb/go-archaius",
 			"vcs": "git",
-			"revision": "0c607626e8c72b7d80568802ccb7f7a6262f4db5",
+			"revision": "b8c26a80342fa9fbc971fa347516f58889d413ca",
 			"branch": "HEAD",
 			"notests": true,
 			"allfiles": true
@@ -40,7 +40,7 @@
 			"importpath": "github.com/ServiceComb/go-cc-client",
 			"repository": "https://github.com/ServiceComb/go-cc-client",
 			"vcs": "git",
-			"revision": "3d262a6cdb8160b89cea17038541e9e367ffdc5a",
+			"revision": "4154a46542c0407f2b4dcd228aaa2dfba8dd2120",
 			"branch": "HEAD",
 			"notests": true,
 			"allfiles": true
