@@ -12,7 +12,7 @@ import:
   version: master
   repo: https://github.com/ServiceComb/auth
 - package: github.com/ServiceComb/go-archaius
-  version: 0c607626e8c72b7d80568802ccb7f7a6262f4db5
+  version: b8c26a80342fa9fbc971fa347516f58889d413ca
   repo: https://github.com/ServiceComb/go-archaius
   subpackages:
   - core
