@@ -43,6 +43,7 @@ import (
 	// tcp package handles transport related things
 	"github.com/ServiceComb/go-chassis/core/archaius"
 	"github.com/ServiceComb/go-chassis/core/metadata"
+	"github.com/ServiceComb/go-chassis/config-center"
 )
 
 var goChassis *chassis
@@ -135,6 +136,8 @@ func (c *chassis) initialize() error {
 	}
 
 	bootstrap.Bootstrap()
+
+	configcenter.InitConfigCenter()
 	// router needs get configs from config-center when init
 	// so it must init after bootstrap
 	err = router.Init()
