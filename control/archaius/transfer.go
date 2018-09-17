@@ -18,7 +18,7 @@ func SaveToLBCache(raw *model.LoadBalancing, key string, isAnyService bool) {
 	lager.Logger.Debug("Loading lb config from archaius into cache")
 	saveDefaultLB(raw)
 	for k, v := range raw.AnyService {
-		saveEachLB(k, v)
+			saveEachLB(k, v)
 	}
 	if !isAnyService {
 		stringSlice := strings.Split(key, ".")

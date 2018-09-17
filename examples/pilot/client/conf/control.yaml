@@ -1,0 +1,4 @@
+control:
+  infra: pilot
+  settings:
+    address: http://istio-pilot.istio-system:15010

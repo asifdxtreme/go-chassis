@@ -32,7 +32,10 @@ type RDS interface {
 type EDS interface{}
 
 // CDS defines cluster discovery service interface
-type CDS interface{}
+type CDS interface{
+	GetAllClusterConfigurations()(*envoy_api.Cluster, error)
+	//GetClusterConfigurationsByClusterID()(*envoy_api.Cluster, error)
+}
 
 // LDS defines listener discovery service interface
 type LDS interface{}
@@ -42,6 +45,7 @@ type pilotClient struct {
 
 	adsConn xds.AggregatedDiscoveryServiceClient
 	edsConn envoy_api.EndpointDiscoveryServiceClient
+	cdsConn envoy_api.ClusterDiscoveryServiceClient
 }
 
 // NewGRPCPilotClient returns new PilotClient from options
@@ -59,6 +63,67 @@ func NewGRPCPilotClient(cfg *PilotOptions) (PilotClient, error) {
 	return &pilotClient{rawConn: conn,
 		adsConn: ads, edsConn: eds,
 	}, nil
+}
+
+func (c *pilotClient) GetAllClusterConfigurations ()(*envoy_api.Cluster, error) {
+
+	/*cds, err := c.cdsConn.StreamClusters(context.Background())
+
+	if err != nil {
+		return nil, fmt.Errorf("[CDS] stream error: %v", err)
+	}
+	nodeID := util.BuildNodeID()
+	cds.Send(&envoy_api.DiscoveryRequest{
+		ResponseNonce: time.Now().String(),
+		Node: &envoy_api_core.Node{
+			Id: nodeID,
+		},
+		ResourceNames: []string{},
+		TypeUrl:       util.RouteType})
+
+	res, err := cds.Recv()
+	if err != nil {
+		return nil, fmt.Errorf("[RDS] recv error for %s(%s): %v", util.RDSHttpProxy, nodeID, err)
+	}
+	return GetClusterConfigurations(res) */
+	adsResClient, conn, err := getAdsResClient(client)
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Close()
+	req := &apiv2.DiscoveryRequest{
+		TypeUrl:       "type.googleapis.com/envoy.api.v2.Cluster",
+		VersionInfo:   client.getVersionInfo(TypeCds),
+		ResponseNonce: client.getNonce(TypeCds),
+	}
+	req.Node = &apiv2core.Node{
+		// Sample taken from istio: router~172.30.77.6~istio-egressgateway-84b4d947cd-rqt45.istio-system~istio-system.svc.cluster.local-2
+		// The Node.Id should be in format {nodeType}~{ipAddr}~{serviceId~{domain}, splitted by '~'
+		// The format is required by pilot
+		Id:      client.NodeID,
+		Cluster: client.NodeCluster,
+	}
+	if err := adsResClient.Send(req); err != nil {
+		return nil, err
+	}
+	resp, err := adsResClient.Recv()
+	if err != nil {
+		return nil, err
+	}
+	client.setNonce(TypeCds, resp.GetNonce())
+	client.setVersionInfo(TypeCds, resp.GetVersionInfo())
+	resources := resp.GetResources()
+	var cluster apiv2.Cluster
+	clusters := []apiv2.Cluster{}
+	for _, res := range resources {
+		if err := proto.Unmarshal(res.GetValue(), &cluster); err != nil {
+			lager.Logger.Warnf("Failed to unmarshal cluster resource: %s", err.Error())
+		} else {
+			clusters = append(clusters, cluster)
+		}
+	}
+	return clusters, nil
+
 }
 
 func (c *pilotClient) GetAllRouteConfigurations() (*envoy_api.RouteConfiguration, error) {

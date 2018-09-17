@@ -123,6 +123,7 @@ func (r *pilotSource) GetConfigurationByKey(k string) (interface{}, error) {
 	return nil, fmt.Errorf("not found %s", k)
 }
 
+
 // get router config from pilot
 func (r *pilotSource) getRouterConfigFromPilot() (*model.RouterConfig, error) {
 	routeRules := &model.RouterConfig{
