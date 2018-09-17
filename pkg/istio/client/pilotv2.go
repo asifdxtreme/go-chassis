@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	apiv2 "github.com/envoyproxy/go-control-plane/envoy/api/v2"
+	apiv2core "github.com/envoyproxy/go-control-plane/envoy/api/v2/core"
 	envoy_api "github.com/envoyproxy/go-control-plane/envoy/api/v2"
 	envoy_api_core "github.com/envoyproxy/go-control-plane/envoy/api/v2/core"
 	xds "github.com/envoyproxy/go-control-plane/envoy/service/discovery/v2"
@@ -45,7 +47,7 @@ type pilotClient struct {
 
 	adsConn xds.AggregatedDiscoveryServiceClient
 	edsConn envoy_api.EndpointDiscoveryServiceClient
-	cdsConn envoy_api.ClusterDiscoveryServiceClient
+	cdsConn xds.AggregatedDiscoveryServiceClient
 }
 
 // NewGRPCPilotClient returns new PilotClient from options
@@ -65,9 +67,27 @@ func NewGRPCPilotClient(cfg *PilotOptions) (PilotClient, error) {
 	}, nil
 }
 
+func NewXdsClient(pilotAddr string, nodeInfo *NodeInfo) (*XdsClient, error) {
+	// TODO Handle the array
+	xdsClient := &XdsClient{
+		PilotAddr: pilotAddr,
+		nodeInfo:  nodeInfo,
+	}
+	xdsClient.NodeID = fmt.Sprintf("sidecar~%s~%s~%s", nodeInfo.InstanceIP, nodeInfo.PodName, nodeInfo.Namespace)
+	xdsClient.NodeCluster = nodeInfo.PodName
+
+	xdsClient.ReqCaches = map[XdsType]*XdsReqCache{
+		TypeCds: &XdsReqCache{},
+		TypeEds: &XdsReqCache{},
+		TypeLds: &XdsReqCache{},
+		TypeRds: &XdsReqCache{},
+	}
+	return xdsClient, nil
+}
+
 func (c *pilotClient) GetAllClusterConfigurations ()(*envoy_api.Cluster, error) {
 
-	/*cds, err := c.cdsConn.StreamClusters(context.Background())
+	cds, err := c.cdsConn.StreamAggregatedResources(context.Background())
 
 	if err != nil {
 		return nil, fmt.Errorf("[CDS] stream error: %v", err)
@@ -79,13 +99,18 @@ func (c *pilotClient) GetAllClusterConfigurations ()(*envoy_api.Cluster, error) 
 			Id: nodeID,
 		},
 		ResourceNames: []string{},
-		TypeUrl:       util.RouteType})
+		TypeUrl:       "type.googleapis.com/envoy.api.v2.Cluster"
+	})
 
 	res, err := cds.Recv()
 	if err != nil {
 		return nil, fmt.Errorf("[RDS] recv error for %s(%s): %v", util.RDSHttpProxy, nodeID, err)
 	}
-	return GetClusterConfigurations(res) */
+	clusters, _ := GetClusterConfigurations(res)
+	return clusters[0], nil
+
+
+	/*client, _ := NewXdsClient("", nil)
 	adsResClient, conn, err := getAdsResClient(client)
 	if err != nil {
 		return nil, err
@@ -122,8 +147,23 @@ func (c *pilotClient) GetAllClusterConfigurations ()(*envoy_api.Cluster, error) 
 			clusters = append(clusters, cluster)
 		}
 	}
-	return clusters, nil
+	return clusters, nil*/
 
+}
+
+func getAdsResClient(client *XdsClient) (v2.AggregatedDiscoveryService_StreamAggregatedResourcesClient, *grpc.ClientConn, error) {
+	conn, err := client.getGrpcConn()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	adsClient := v2.NewAggregatedDiscoveryServiceClient(conn)
+	adsResClient, err := adsClient.StreamAggregatedResources(context.Background())
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return adsResClient, conn, nil
 }
 
 func (c *pilotClient) GetAllRouteConfigurations() (*envoy_api.RouteConfiguration, error) {

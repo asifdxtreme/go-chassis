@@ -58,7 +58,7 @@ type XdsClusterInfo struct {
 	Addrs        []string // The accessible addresses of the endpoints
 }
 
-func NewXdsClient(pilotAddr string, nodeInfo *NodeInfo) (*XdsClient, error) {
+/*func NewXdsClient(pilotAddr string, nodeInfo *NodeInfo) (*XdsClient, error) {
 	// TODO Handle the array
 	xdsClient := &XdsClient{
 		PilotAddr: pilotAddr,
@@ -74,7 +74,7 @@ func NewXdsClient(pilotAddr string, nodeInfo *NodeInfo) (*XdsClient, error) {
 		TypeRds: &XdsReqCache{},
 	}
 	return xdsClient, nil
-}
+}*/
 
 func (client *XdsClient) getGrpcConn() (*grpc.ClientConn, error) {
 	var conn *grpc.ClientConn
